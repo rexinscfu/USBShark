@@ -1,0 +1,45 @@
+# Build outputs
+firmware/build/
+*.o
+*.elf
+*.hex
+*.bin
+*.lst
+*.map
+
+# AVR development files
+*.eep
+*.lss
+*.sym
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Node.js dependencies (for desktop app)
+node_modules/
+npm-debug.log
+
+# Electron build outputs
+dist/
+out/
+
+# Logs
+logs/
+*.log
+
+# Desktop application specific
+desktop/build/
+desktop/dist/
+desktop/node_modules/ 
