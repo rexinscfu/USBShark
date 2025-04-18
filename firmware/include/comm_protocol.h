@@ -72,6 +72,7 @@ bool comm_process_command(const comm_packet_t *packet);
 void comm_send_ack(uint8_t sequence);
 void comm_send_nack(uint8_t sequence, error_code_t error);
 uint16_t comm_calculate_crc(const uint8_t *data, uint16_t length);
+uint16_t comm_calculate_crc_continue(const uint8_t *data, uint16_t length, uint16_t crc);
 
 /* Utility functions */
 void comm_escape_data(uint8_t *dest, const uint8_t *src, uint8_t length, uint8_t *escaped_length);

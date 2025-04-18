@@ -1,4 +1,4 @@
-# USBShark Firmware Makefile
+# USBShark Firmware Makefile - Military-grade USB protocol analyzer
 # For AVR ATmega microcontrollers (Arduino compatible)
 
 # MCU settings

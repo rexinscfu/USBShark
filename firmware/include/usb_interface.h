@@ -19,9 +19,17 @@ typedef enum {
     USB_PID_SETUP = 0x2D,
     USB_PID_DATA0 = 0xC3,
     USB_PID_DATA1 = 0x4B,
+    USB_PID_DATA2 = 0x87,
+    USB_PID_MDATA = 0x0F,
     USB_PID_ACK   = 0xD2,
     USB_PID_NAK   = 0x5A,
-    USB_PID_STALL = 0x1E
+    USB_PID_STALL = 0x1E,
+    USB_PID_NYET  = 0x96,
+    USB_PID_PRE   = 0x3C,
+    USB_PID_ERR   = 0x3C,
+    USB_PID_SPLIT = 0x78,
+    USB_PID_PING  = 0xB4,
+    USB_PID_RESERVED = 0xF0
 } usb_pid_t;
 
 /* USB Speed */

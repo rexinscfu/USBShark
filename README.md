@@ -1,6 +1,6 @@
 # USBShark
 
-USBShark: Arduino-powered USB protocol analyzer with real-time monitoring, packet decoding, and advanced filtering.
+USBShark: Military-grade Arduino-powered USB protocol analyzer with real-time monitoring, packet decoding, and advanced filtering.
 
 ## Features
 

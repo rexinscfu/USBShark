@@ -35,6 +35,7 @@ static volatile uint8_t rx_packet_length = 0;
 static volatile uint8_t tx_sequence = 0;
 static volatile uint8_t rx_sequence = 0;
 static comm_packet_t rx_packet;
+static volatile bool packet_ready = false;
 
 /* CRC-16 lookup table */
 static const uint16_t crc16_table[256] = {
@@ -95,6 +96,7 @@ void comm_init(void) {
     rx_state = PROTO_STATE_WAIT_SYNC;
     tx_sequence = 0;
     rx_sequence = 0;
+    packet_ready = false;
 }
 
 /**
@@ -127,6 +129,27 @@ static bool uart_send_byte(uint8_t data) {
     SREG = sreg;
     
     return buffer_status;
+}
+
+/**
+ * Receive a packet from the host
+ * @param packet Pointer to store the received packet
+ * @return true if packet received, false otherwise
+ */
+bool comm_receive_packet(comm_packet_t *packet) {
+    uint8_t sreg = SREG;
+    cli();
+    
+    bool result = packet_ready;
+    
+    if (packet_ready) {
+        // Copy the received packet
+        memcpy(packet, (void*)&rx_packet, sizeof(comm_packet_t));
+        packet_ready = false;
+    }
+    
+    SREG = sreg;
+    return result;
 }
 
 /**
@@ -521,8 +544,16 @@ static void process_rx_byte(uint8_t byte) {
             calculated_crc = comm_calculate_crc_continue(rx_packet.data, rx_packet.length, calculated_crc);
             
             if (calculated_crc == rx_packet.crc) {
-                // Process valid packet
-                comm_process_command(&rx_packet);
+                // Valid packet received
+                if (rx_packet.type & 0x80) {
+                    // This is a data packet, not a command
+                    // Process immediately
+                    comm_process_command(&rx_packet);
+                } else {
+                    // This is a command packet from host
+                    // Set flag for main loop to handle
+                    packet_ready = true;
+                }
             } else {
                 // Send NACK for invalid CRC
                 comm_send_nack(rx_packet.sequence, ERR_CRC_FAILURE);
