@@ -1,0 +1,52 @@
+{
+  "name": "usbshark",
+  "version": "0.1.0",
+  "description": "Military-grade USB protocol analyzer with secure real-time monitoring, advanced packet decoding, and tactical filtering capabilities",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "nodemon --exec electron . --watch src",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux"
+  },
+  "author": "USBShark Team",
+  "license": "MIT",
+  "dependencies": {
+    "electron-store": "^8.1.0",
+    "serialport": "^10.5.0",
+    "chart.js": "^3.9.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "electron": "^23.1.0",
+    "electron-builder": "^23.6.0",
+    "nodemon": "^2.0.22"
+  },
+  "build": {
+    "appId": "com.usbshark.app",
+    "productName": "USBShark",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "src/assets/icon.ico"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "src/assets/icon.icns"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "src/assets/icon.png"
+    }
+  }
+} 

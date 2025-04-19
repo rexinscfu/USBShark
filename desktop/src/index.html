@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="USBShark - Military-grade USB protocol analyzer with real-time monitoring, packet decoding, and advanced filtering capabilities">
+    <title>USBShark - Military-grade USB Protocol Analyzer</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <div id="app">
+        <header id="titlebar">
+            <div id="drag-region">
+                <div id="window-title">
+                    <span>USBShark - Military-grade USB Protocol Analyzer</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="container">
+            <div id="sidebar">
+                <div class="device-status">
+                    <h3>Device Status</h3>
+                    <div id="status-indicator" class="disconnected">
+                        <span id="status-text">Disconnected</span>
+                    </div>
+                    <button id="connect-btn" class="action-btn">Connect</button>
+                    <button id="disconnect-btn" class="action-btn" disabled>Disconnect</button>
+                </div>
+                
+                <div class="capture-controls">
+                    <h3>Capture Controls</h3>
+                    <button id="start-capture-btn" class="action-btn" disabled>Start Capture</button>
+                    <button id="stop-capture-btn" class="action-btn" disabled>Stop Capture</button>
+                    <button id="clear-data-btn" class="action-btn">Clear Data</button>
+                </div>
+                
+                <div class="filters">
+                    <h3>Filters</h3>
+                    <div class="filter-section">
+                        <h4>Transfer Types</h4>
+                        <label>
+                            <input type="checkbox" id="filter-control" checked>
+                            Control
+                        </label>
+                        <label>
+                            <input type="checkbox" id="filter-bulk" checked>
+                            Bulk
+                        </label>
+                        <label>
+                            <input type="checkbox" id="filter-interrupt" checked>
+                            Interrupt
+                        </label>
+                        <label>
+                            <input type="checkbox" id="filter-isochronous" checked>
+                            Isochronous
+                        </label>
+                    </div>
+                    
+                    <div class="filter-section">
+                        <h4>Device Address</h4>
+                        <input type="number" id="filter-address" min="0" max="127" value="0">
+                        <label>
+                            <input type="checkbox" id="filter-address-enabled">
+                            Enable
+                        </label>
+                    </div>
+                    
+                    <div class="filter-section">
+                        <h4>Endpoint</h4>
+                        <input type="number" id="filter-endpoint" min="0" max="15" value="0">
+                        <label>
+                            <input type="checkbox" id="filter-endpoint-enabled">
+                            Enable
+                        </label>
+                    </div>
+                    
+                    <button id="apply-filters-btn" class="action-btn">Apply Filters</button>
+                </div>
+                
+                <div class="statistics">
+                    <h3>Statistics</h3>
+                    <div id="stats-container">
+                        <div class="stat">
+                            <span class="stat-label">Packets:</span>
+                            <span id="packet-count" class="stat-value">0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Device:</span>
+                            <span id="device-count" class="stat-value">0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Buffer:</span>
+                            <span id="buffer-usage" class="stat-value">0%</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Elapsed:</span>
+                            <span id="elapsed-time" class="stat-value">00:00:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="main-content">
+                <div class="tab-container">
+                    <div class="tab-buttons">
+                        <button class="tab-btn active" data-tab="packet-list">Packet List</button>
+                        <button class="tab-btn" data-tab="packet-details">Packet Details</button>
+                        <button class="tab-btn" data-tab="raw-data">Raw Data</button>
+                        <button class="tab-btn" data-tab="transaction-view">Transaction View</button>
+                    </div>
+                    
+                    <div class="tab-content">
+                        <div id="packet-list" class="tab-pane active">
+                            <table id="packet-table">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Time</th>
+                                        <th>Device</th>
+                                        <th>EP</th>
+                                        <th>Type</th>
+                                        <th>PID</th>
+                                        <th>Length</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="packet-table-body">
+                                    <!-- Packets will be added here -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div id="packet-details" class="tab-pane">
+                            <div id="details-placeholder">
+                                <p>Select a packet to view details</p>
+                            </div>
+                            <div id="details-content" hidden>
+                                <div class="details-section">
+                                    <h3>Packet Information</h3>
+                                    <div id="packet-info"></div>
+                                </div>
+                                <div class="details-section">
+                                    <h3>Fields</h3>
+                                    <div id="packet-fields"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="raw-data" class="tab-pane">
+                            <div id="hex-viewer">
+                                <div id="hex-offset">
+                                    <div class="hex-header">Offset</div>
+                                    <!-- Offset values will be added here -->
+                                </div>
+                                <div id="hex-values">
+                                    <div class="hex-header">Hex Values</div>
+                                    <!-- Hex values will be added here -->
+                                </div>
+                                <div id="hex-ascii">
+                                    <div class="hex-header">ASCII</div>
+                                    <!-- ASCII representation will be added here -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="transaction-view" class="tab-pane">
+                            <div id="transaction-container">
+                                <!-- Transactions will be added here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Dialogs -->
+    <div id="connection-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Connect to USBShark Device</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="port-select">Serial Port:</label>
+                    <select id="port-select">
+                        <option value="">Select a port</option>
+                    </select>
+                    <button id="refresh-ports-btn">Refresh</button>
+                </div>
+                <div class="form-group">
+                    <label for="baud-rate">Baud Rate:</label>
+                    <select id="baud-rate">
+                        <option value="9600">9600</option>
+                        <option value="19200">19200</option>
+                        <option value="38400">38400</option>
+                        <option value="57600">57600</option>
+                        <option value="115200">115200</option>
+                        <option value="230400">230400</option>
+                        <option value="460800">460800</option>
+                        <option value="921600">921600</option>
+                        <option value="1000000" selected>1000000</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="connect-modal-btn" class="action-btn">Connect</button>
+                <button id="cancel-modal-btn" class="action-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="renderer.js"></script>
+</body>
+</html> 
